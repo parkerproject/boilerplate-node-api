@@ -1,0 +1,14 @@
+{
+  "name": "boxedsalesapi",
+  "version": "0.0.0",
+  "description": "boxedsales api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Parker Ituk",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "~7.0.0"
+  }
+}
