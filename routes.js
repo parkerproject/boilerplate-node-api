@@ -12,11 +12,11 @@ module.exports = function(server) {
 					config: controller.base.all_deals
         },
 
-			// 				{
-			// 					method: 'GET',
-			// 					path: '/api/deals/{city}/{category?}',
-			// 					config: controller.base.city
-			// 				}
+				{
+					method: 'GET',
+					path: '/api/deals/featured',
+					config: controller.base.featured
+				}
     ];
     return routeTable;
 };
