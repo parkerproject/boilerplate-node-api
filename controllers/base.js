@@ -105,6 +105,15 @@ module.exports = {
       });
     }
 
+  },
+
+  categories: {
+    handler: function(request, reply) {
+      db.categories.find({}, function(err, results) {
+        reply(results);
+      });
+    }
+
   }
 
 

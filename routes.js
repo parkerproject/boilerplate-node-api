@@ -21,6 +21,12 @@ module.exports = function(server) {
 					method: 'GET',
 					path: '/api/deals/cities',
 					config: controller.base.cities
+				},
+			
+				{
+					method: 'GET',
+					path: '/api/deals/categories',
+					config: controller.base.categories
 				}
     ];
     return routeTable;
