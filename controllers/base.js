@@ -1,5 +1,5 @@
 require('dotenv').load();
-var collections = ['deals'];
+var collections = ['deals', 'cities', 'categories'];
 var db = require("mongojs").connect(process.env.BOXEDSALE_MONGODB_URL, collections);
 var Joi = require('joi');
 var _ = require('underscore');
@@ -33,7 +33,6 @@ module.exports = {
       if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
       if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
       if (request.query.region) findObj.merchant_region = new RegExp(request.query.region, 'i');
-
 
       db.deals.find(findObj).skip(skip).sort({
         _id: -1
@@ -87,14 +86,6 @@ module.exports = {
       });
 
 
-
-
-      // send the providers array to the query string, something like &providers=groupon|livingsocials|amazon local
-      // use mongodb $in operator to return results in that array
-      // finally when the results comes up, shuffle with underscore shuffle function
-      // the total number of results should be 45(15 each)
-
-
     },
 
     validate: {
@@ -102,6 +93,16 @@ module.exports = {
         city: Joi.string(),
         region: Joi.string()
       }
+    }
+
+  },
+
+
+  cities: {
+    handler: function(request, reply) {
+      db.cities.find({}, function(err, results) {
+        reply(results);
+      });
     }
 
   }
