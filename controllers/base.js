@@ -4,6 +4,7 @@ var db = require("mongojs").connect(process.env.BOXEDSALE_MONGODB_URL, collectio
 var Joi = require('joi');
 var _ = require('underscore');
 var Promise = require('es6-promise').Promise;
+var loading = 'Fetching deals...';
 
 
 
@@ -37,7 +38,8 @@ module.exports = {
       db.deals.find(findObj).skip(skip).sort({
         _id: -1
       }).limit(limit, function(err, results) {
-        reply(results);
+				if(results.length === 0) reply(loading);
+        if(results.length !== 0) reply(results);
       });
     },
 
@@ -76,8 +78,11 @@ module.exports = {
             count -= 1;
             results.push(d);
 
-
-            if (count === 0) reply(_.shuffle(_.flatten(results, [1])));
+						if (count === 0) {
+							var flatResults = _.flatten(results, [1]);
+							if(flatResults.length === 0)reply(loading);
+							if (flatResults.length !== 0) reply(_.shuffle(flatResults));
+						}
 
           })(deals);
 
