@@ -38,8 +38,8 @@ module.exports = {
       db.deals.find(findObj).skip(skip).sort({
         _id: -1
       }).limit(limit, function(err, results) {
-				if(results.length === 0) reply(loading);
-        if(results.length !== 0) reply(results);
+        if (results.length === 0) reply(loading);
+        if (results.length !== 0) reply(results);
       });
     },
 
@@ -78,11 +78,11 @@ module.exports = {
             count -= 1;
             results.push(d);
 
-						if (count === 0) {
-							var flatResults = _.flatten(results, [1]);
-							if(flatResults.length === 0)reply(loading);
-							if (flatResults.length !== 0) reply(_.shuffle(flatResults));
-						}
+            if (count === 0) {
+              var flatResults = _.flatten(results, [1]);
+              if (flatResults.length === 0) reply(loading);
+              if (flatResults.length !== 0) reply(_.shuffle(flatResults));
+            }
 
           })(deals);
 
@@ -119,7 +119,39 @@ module.exports = {
       });
     }
 
-  }
+  },
+
+  search: {
+    handler: function(request, reply) {
+
+      var q = request.query.q;
+      q = q.trim();
+      db.deals.find({
+        $text: {
+          $search: q
+        }
+      }, {
+        score: {
+          $meta: "textScore"
+        }
+      }).sort({
+        score: {
+          $meta: "textScore"
+        }
+      }, function(err, results) {
+        reply(results);
+      });
+
+
+    },
+
+    validate: {
+      query: {
+        q: Joi.string()
+      }
+    }
+
+  },
 
 
 

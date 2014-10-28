@@ -27,6 +27,11 @@ module.exports = function(server) {
 					method: 'GET',
 					path: '/api/deals/categories',
 					config: controller.base.categories
+				},
+				{
+					method: 'GET',
+					path: '/api/deals/search',
+					config: controller.base.search
 				}
     ];
     return routeTable;
