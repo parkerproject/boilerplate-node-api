@@ -29,7 +29,11 @@ module.exports = {
       var findObj = {};
 
 
-      if (request.query.category) findObj.category_name = [new RegExp(request.query.category, 'i')];
+      if (request.query.category){
+				var category = new RegExp(request.query.category, 'i');
+				findObj.category_name = { "$in" : [category]};
+			} 
+			
       if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
       if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
       if (request.query.region) findObj.merchant_region = new RegExp(request.query.region, 'i');
