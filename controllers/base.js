@@ -29,11 +29,13 @@ module.exports = {
       var findObj = {};
 
 
-      if (request.query.category){
-				var category = new RegExp(request.query.category, 'i');
-				findObj.category_name = { "$in" : [category]};
-			} 
-			
+      if (request.query.category) {
+        var category = new RegExp(request.query.category, 'i');
+        findObj.category_name = {
+          "$in": [category]
+        };
+      }
+
       if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
       if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
       if (request.query.region) findObj.merchant_region = new RegExp(request.query.region, 'i');
@@ -69,7 +71,6 @@ module.exports = {
       var count = providers.length;
 
       if (request.query.city) queryObj.merchant_locality = new RegExp(request.query.city, 'i');
-      if (request.query.region) queryObj.merchant_region = new RegExp(request.query.region, 'i');
 
 
       providers.forEach(function(provider) {
@@ -128,6 +129,9 @@ module.exports = {
     handler: function(request, reply) {
 
       var q = request.query.q;
+      var limit = request.query.limit || 20;
+      var skip = request.query.offset || 0;
+
       q = q.trim();
       db.deals.find({
         $text: {
@@ -141,7 +145,7 @@ module.exports = {
         score: {
           $meta: "textScore"
         }
-      }, function(err, results) {
+      }).limit(limit, function(err, results) {
         reply(results);
       });
 
@@ -150,7 +154,10 @@ module.exports = {
 
     validate: {
       query: {
-        q: Joi.string()
+        q: Joi.string(),
+        limit: Joi.number().integer().min(1).max(50).
+        default (20),
+        offset: Joi.number().min(1).max(100).integer()
       }
     }
 
