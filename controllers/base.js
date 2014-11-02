@@ -1,5 +1,5 @@
 require('dotenv').load();
-var collections = ['deals', 'cities', 'categories'];
+var collections = ['deals', 'cities', 'categories', 'providers'];
 var db = require("mongojs").connect(process.env.BOXEDSALE_MONGODB_URL, collections);
 var Joi = require('joi');
 var _ = require('underscore');
@@ -119,6 +119,15 @@ module.exports = {
   categories: {
     handler: function(request, reply) {
       db.categories.find({}, function(err, results) {
+        reply(results);
+      });
+    }
+
+  },
+
+  providers: {
+    handler: function(request, reply) {
+      db.providers.find({}, function(err, results) {
         reply(results);
       });
     }
