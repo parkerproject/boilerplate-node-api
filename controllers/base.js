@@ -65,7 +65,7 @@ module.exports = {
   featured: {
     handler: function(request, reply) {
 
-      var providers = ['livingsocial', 'amazon local', 'groupon'];
+      var providers = ['livingsocial', 'amazon local', 'groupon', 'yelp'];
       var queryObj = {};
       var results = [];
       var count = providers.length;
@@ -74,7 +74,7 @@ module.exports = {
 
 
       providers.forEach(function(provider) {
-        queryObj.provider_name = provider;
+        queryObj.provider_name = new RegExp(provider, 'i');
 
         providerCall(queryObj, function(deals) {
 
