@@ -41,7 +41,7 @@ module.exports = {
       if (request.query.region) findObj.merchant_region = new RegExp(request.query.region, 'i');
 
       db.deals.find(findObj).skip(skip).sort({
-        _id: -1
+        insert_date: -1
       }).limit(limit, function(err, results) {
         if (results.length === 0) reply(loading);
         if (results.length !== 0) reply(results);
