@@ -14,11 +14,6 @@ module.exports = function(server) {
 
 				{
 					method: 'GET',
-					path: '/api/deals/featured',
-					config: controller.base.featured
-				},
-				{
-					method: 'GET',
 					path: '/api/deals/cities',
 					config: controller.base.cities
 				},

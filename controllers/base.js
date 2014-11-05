@@ -9,7 +9,7 @@ var bulk = db.deals.initializeOrderedBulkOp();
 
 
 
-// bulk.find({category_name: ["Food & Drinks", "Food, Drinks"]}).update({$pop: { category_name: -1 }});
+// bulk.find({provider_name: "amazon local"}).update({$set: {provider_name: "Amazon Local"}});
 
 // bulk.execute(function(err, res) {
 //   console.log(res);
@@ -49,7 +49,14 @@ module.exports = {
         insert_date: -1
       }).limit(limit, function(err, results) {
         if (results.length === 0) reply(loading);
-        if (results.length !== 0) reply(results);
+
+        if (results.length !== 0) {
+          var cachedResults = _.shuffle(results);
+					reply(cachedResults);
+        }
+        
+
+
       });
     },
 
@@ -67,49 +74,6 @@ module.exports = {
 
   },
 
-  featured: {
-    handler: function(request, reply) {
-
-      var providers = ['livingsocial', 'amazon local', 'groupon', 'yelp'];
-      var queryObj = {};
-      var results = [];
-      var count = providers.length;
-
-      if (request.query.city) queryObj.merchant_locality = new RegExp(request.query.city, 'i');
-
-
-      providers.forEach(function(provider) {
-        queryObj.provider_name = new RegExp(provider, 'i');
-
-        providerCall(queryObj, function(deals) {
-
-          (function(d) {
-            count -= 1;
-            results.push(d);
-
-            if (count === 0) {
-              var flatResults = _.flatten(results, [1]);
-              if (flatResults.length === 0) reply(loading);
-              if (flatResults.length !== 0) reply(_.shuffle(flatResults));
-            }
-
-          })(deals);
-
-        });
-
-      });
-
-
-    },
-
-    validate: {
-      query: {
-        city: Joi.string(),
-        region: Joi.string()
-      }
-    }
-
-  },
 
 
   cities: {
