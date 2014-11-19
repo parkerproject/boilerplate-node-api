@@ -5,14 +5,12 @@ var Joi = require('joi');
 var _ = require('underscore');
 var loading = 'Fetching deals...';
 
-var bulk = db.deals.initializeOrderedBulkOp();
+// var bulk = db.deals.initializeOrderedBulkOp();
 
+// bulk.find({provider_name: "Amazon Local", merchant_locality: "albany"}).update({$set: {merchant_locality: "boston"}});                                                         
 
-
-// bulk.find({provider_name: "amazon local"}).update({$set: {provider_name: "Amazon Local"}});
-
-// bulk.execute(function(err, res) {
-//   console.log(res);
+// bulk.execute(function(err, res) {                                                                                                                   
+//  console.log(res);                                                                                                                                 
 // });
 
 
@@ -25,7 +23,16 @@ function providerCall(queryObj, fn) {
   });
 }
 
+var categoryMap = {
+  'food, drinks': ['Restaurants, Bars & Pubs', 'Food & Drinks', 'Restaurants'],
+  'activities, events, travel': ['Entertainment & Travel', 'Things to do', 'Events & Activities'],
+  'beauty, health': ['Health & Beauty', 'Health & Fitness', 'Beauty & Spas', 'Sports & Fitness'],
+  'shopping, services': ['Home Services', 'Local Services', 'Services', 'Shopping & Services', 'Shopping']
+};
 
+function categoryArray(item) {
+  return categoryMap[item];
+}
 
 
 module.exports = {
@@ -40,10 +47,25 @@ module.exports = {
 
 
 
-      if (request.query.category) findObj.category_name = new RegExp(request.query.category, 'i');
+      if (request.query.category && request.query.category !== 'all deals') {
+				
+				var cArray = categoryArray(request.query.category);
+
+        findObj.$or = cArray.map(function(item) {
+          return {
+            category_name: new RegExp(item, "i")
+          };
+        });
+
+      }else{
+				// still thinking of what to put here:)
+			}
+			
+
       if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
       if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
       if (request.query.region) findObj.merchant_region = new RegExp(request.query.region, 'i');
+
 
       db.deals.find(findObj).skip(skip).sort({
         insert_date: -1
@@ -52,9 +74,9 @@ module.exports = {
 
         if (results.length !== 0) {
           var cachedResults = _.shuffle(results);
-					reply(cachedResults);
+          reply(cachedResults);
         }
-        
+
 
 
       });
