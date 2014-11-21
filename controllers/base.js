@@ -18,19 +18,19 @@ var loading = 'Fetching deals...';
 
 function searchYelp(name, location, cb) {
 
-var yelp = require("yelp").createClient({
+  var yelp = require("yelp").createClient({
     consumer_key: "9EH0m_d2u_xDFwbXzBSd7Q",
     consumer_secret: "YZlPfA23FaaYKwat1muiwIVFrts",
     token: "zySwZm2QhzHApHRimJX8dcT4ycC6Y_WB",
     token_secret: "3jNfZx7fGZ4cw43ne2ySvRb2g_Q"
-});
+  });
 
   yelp.search({
     term: name,
     location: location
   }, function(error, data) {
-     if(error) console.log(error);
-     if(data) cb(data);
+    if (error) console.log(error);
+    if (data) cb(data);
   });
 
 }
@@ -150,31 +150,40 @@ module.exports = {
 
   reviews: {
     handler: function(request, reply) {
-    
-			var business_name = request.query.business;
-			var location = request.query.location;
-			
-    searchYelp(business_name, location, function(biz){
-			var filteredBiz = _.findWhere(biz.businesses, {name: business_name});
-			delete filteredBiz.is_claimed;
-			delete filteredBiz.mobile_url;
-			delete filteredBiz.url;
-			delete filteredBiz.snippet_text;
-			delete filteredBiz.categories;
-			delete filteredBiz.image_url;
-			delete filteredBiz.snippet_image_url;
-			
-			reply(filteredBiz);
-		});
-		
-		
-		
-		},
+
+      var business_name = request.query.business;
+      var location = request.query.location;
+
+      searchYelp(business_name, location, function(biz) {
+
+        var filteredBiz = _.findWhere(biz.businesses, {
+          name: business_name
+        });
+
+        if (filteredBiz != undefined) {
+          delete filteredBiz.is_claimed;
+          delete filteredBiz.mobile_url;
+          delete filteredBiz.url;
+          delete filteredBiz.snippet_text;
+          delete filteredBiz.categories;
+          delete filteredBiz.image_url;
+          delete filteredBiz.snippet_image_url;
+
+          reply(filteredBiz);
+        }else{
+					reply({'rating': null});
+				}
+
+      });
+
+
+
+    },
 
     validate: {
       query: {
         business: Joi.string(),
-				location: Joi.string()
+        location: Joi.string()
       }
     }
 
