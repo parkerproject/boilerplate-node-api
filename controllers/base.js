@@ -170,9 +170,11 @@ module.exports = {
           delete filteredBiz.snippet_image_url;
 
           reply(filteredBiz);
-        }else{
-					reply({'rating': null});
-				}
+        } else {
+          reply({
+            'rating': null
+          });
+        }
 
       });
 
@@ -227,7 +229,50 @@ module.exports = {
 
   },
 
+  similar: {
+    handler: function(request, reply) {
 
+      var title = request.query.title;
+			var category = request.query.category;
+			var limit = 6;
+			
+			category = category.replace("&", "");
+      category = new RegExp(category, "i");
+			
+
+      title = title.trim();
+      db.deals.find({
+        category_name: category,
+        $text: {
+          $search: title
+        }
+      }, {
+        score: {
+          $meta: "textScore"
+        }
+      }).sort({
+        score: {
+          $meta: "textScore"
+        }
+      }).limit(limit, function(err, results) {
+
+        var filteredSimilar = _.reject(results, {
+          title: title
+        });
+        reply(filteredSimilar);
+      });
+
+
+    },
+
+    validate: {
+      query: {
+        title: Joi.string(),
+				category: Joi.string()
+      }
+    }
+
+  }
 
 
 };
