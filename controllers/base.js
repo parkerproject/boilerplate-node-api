@@ -176,7 +176,7 @@ module.exports = {
 
       var business_name = request.query.business;
       var location = request.query.location;
-      business_name = business_name.replaceArray(find, replace);
+      business_name = business_name.replace("&", "");
 
 
 
@@ -247,7 +247,8 @@ module.exports = {
         q: Joi.string(),
         limit: Joi.number().integer().min(1).max(50).
         default (20),
-        offset: Joi.number().min(1).max(100).integer()
+        offset: Joi.number().min(1).max(100).integer(),
+				location: Joi.string()
       }
     }
 
