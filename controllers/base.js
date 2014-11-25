@@ -14,6 +14,29 @@ var loading = 'Fetching deals...';
 // });
 
 
+String.prototype.replaceArray = function(find, replace) {
+  var replaceString = this;
+  var regex;
+  for (var i = 0; i < find.length; i++) {
+    regex = new RegExp(find[i], "g");
+    replaceString = replaceString.replace(regex, replace[i]);
+  }
+  return replaceString;
+};
+
+
+var find = [
+'restaraunt',
+'cafe',
+'kitchen & Bar',
+'bar',
+'grill',
+'company',
+'lounge',
+'restaraunt & lounge'
+ ];
+
+var replace = ['', '', '', '', '', '', '', ''];
 
 
 function searchYelp(name, location, cb) {
@@ -153,14 +176,14 @@ module.exports = {
 
       var business_name = request.query.business;
       var location = request.query.location;
+      business_name = business_name.replaceArray(find, replace);
+
+
 
       searchYelp(business_name, location, function(biz) {
 
-        var filteredBiz = _.findWhere(biz.businesses, {
-          name: business_name
-        });
-
-        if (filteredBiz != undefined) {
+        if (biz.businesses.length > 0) {
+          var filteredBiz = biz.businesses[0];
           delete filteredBiz.is_claimed;
           delete filteredBiz.mobile_url;
           delete filteredBiz.url;
@@ -185,7 +208,8 @@ module.exports = {
     validate: {
       query: {
         business: Joi.string(),
-        location: Joi.string()
+        location: Joi.string(),
+        phone: Joi.string()
       }
     }
 
@@ -233,12 +257,12 @@ module.exports = {
     handler: function(request, reply) {
 
       var title = request.query.title;
-			var category = request.query.category;
-			var limit = 6;
-			
-			category = category.replace("&", "");
+      var category = request.query.category;
+      var limit = 6;
+
+      category = category.replace("&", "");
       category = new RegExp(category, "i");
-			
+
 
       title = title.trim();
       db.deals.find({
@@ -268,7 +292,7 @@ module.exports = {
     validate: {
       query: {
         title: Joi.string(),
-				category: Joi.string()
+        category: Joi.string()
       }
     }
 
