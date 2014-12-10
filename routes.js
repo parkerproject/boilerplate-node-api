@@ -41,8 +41,8 @@ module.exports = function(server) {
 			
 				{
 					method: 'GET',
-					path: '/api/deals/similar',
-					config: controller.base.similar
+					path: '/api/deals/prices',
+					config: controller.base.price
 				}
     ];
     return routeTable;

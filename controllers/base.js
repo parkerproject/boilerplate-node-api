@@ -1,5 +1,5 @@
 require('dotenv').load();
-var collections = ['deals', 'cities', 'categories', 'providers'];
+var collections = ['deals', 'cities', 'categories', 'providers', 'price'];
 var db = require("mongojs").connect(process.env.BOXEDSALE_MONGODB_URL, collections);
 var Joi = require('joi');
 var _ = require('underscore');
@@ -69,15 +69,30 @@ function providerCall(queryObj, fn) {
   });
 }
 
-var categoryMap = {
+var categoryArray = {
   'food, drinks': ['Restaurants, Bars & Pubs', 'Food & Drinks', 'Restaurants'],
   'activities, events, travel': ['Entertainment & Travel', 'Things to do', 'Events & Activities'],
   'beauty, health': ['Health & Beauty', 'Health & Fitness', 'Beauty & Spas', 'Sports & Fitness'],
   'shopping, services': ['Home Services', 'Local Services', 'Services', 'Shopping & Services', 'Shopping']
 };
 
-function categoryArray(item) {
-  return categoryMap[item];
+var priceArray = {
+  'less than $25': {
+    $lt: 25
+  },
+  'less than $50': {
+    $lt: 50
+  },
+  'less than $75': {
+    $lt: 75
+  },
+  'over $75': {
+    $gt: 75
+  }
+};
+
+function hashFn(item, arr) {
+  return arr[item];
 }
 
 
@@ -95,7 +110,7 @@ module.exports = {
 
       if (request.query.category && request.query.category !== 'all deals') {
 
-        var cArray = categoryArray(request.query.category);
+        var cArray = hashFn(request.query.category, categoryArray);
 
         findObj.$or = cArray.map(function(item) {
           return {
@@ -147,6 +162,15 @@ module.exports = {
   cities: {
     handler: function(request, reply) {
       db.cities.find({}, function(err, results) {
+        reply(results);
+      });
+    }
+
+  },
+
+  price: {
+    handler: function(request, reply) {
+      db.price.find({}, function(err, results) {
         reply(results);
       });
     }
@@ -218,16 +242,38 @@ module.exports = {
   search: {
     handler: function(request, reply) {
 
-      var q = request.query.q;
+      var q = request.query.q || '';
       var limit = request.query.limit || 20;
       var skip = request.query.offset || 0;
-
+      var queryObj = {};
       q = q.trim();
-      db.deals.find({
-        $text: {
-          $search: q
-        }
-      }, {
+
+
+
+//       if (request.query.category && request.query.category != 'All') {
+
+//           var cArray = hashFn(request.query.category, categoryArray);
+
+//           queryObj.$in = cArray.map(function(item) {
+//             return {
+//               category_name: new RegExp(item, "i")
+//             };
+//           });
+
+//         }
+
+      if (request.query.location) queryObj.merchant_locality = new RegExp(request.query.location, "i");
+
+      if (request.query.price && request.query.price !== 'All') queryObj.new_price = hashFn(request.query.price, priceArray);
+
+      queryObj.$text = {
+        $search: q
+      };
+			
+			console.log(queryObj);
+
+
+      db.deals.find(queryObj, {
         score: {
           $meta: "textScore"
         }
@@ -248,52 +294,8 @@ module.exports = {
         limit: Joi.number().integer().min(1).max(50).
         default (20),
         offset: Joi.number().min(1).max(100).integer(),
-				location: Joi.string()
-      }
-    }
-
-  },
-
-  similar: {
-    handler: function(request, reply) {
-
-      var title = request.query.title;
-      var category = request.query.category;
-      var limit = 6;
-
-      category = category.replace("&", "");
-      category = new RegExp(category, "i");
-
-
-      title = title.trim();
-      db.deals.find({
-        category_name: category,
-        $text: {
-          $search: title
-        }
-      }, {
-        score: {
-          $meta: "textScore"
-        }
-      }).sort({
-        score: {
-          $meta: "textScore"
-        }
-      }).limit(limit, function(err, results) {
-
-        var filteredSimilar = _.reject(results, {
-          title: title
-        });
-        reply(filteredSimilar);
-      });
-
-
-    },
-
-    validate: {
-      query: {
-        title: Joi.string(),
-        category: Joi.string()
+        location: Joi.string(),
+        price: Joi.string()
       }
     }
 
