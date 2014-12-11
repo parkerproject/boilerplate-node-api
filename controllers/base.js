@@ -25,19 +25,6 @@ String.prototype.replaceArray = function(find, replace) {
 };
 
 
-var find = [
-'restaraunt',
-'cafe',
-'kitchen & Bar',
-'bar',
-'grill',
-'company',
-'lounge',
-'restaraunt & lounge'
- ];
-
-var replace = ['', '', '', '', '', '', '', ''];
-
 
 function searchYelp(name, location, cb) {
 
@@ -59,15 +46,6 @@ function searchYelp(name, location, cb) {
 }
 
 
-
-
-function providerCall(queryObj, fn) {
-  db.deals.find(queryObj).sort({
-    _id: -1
-  }).limit(15, function(err, results) {
-    fn(results);
-  });
-}
 
 var categoryArray = {
   'food, drinks': ['Restaurants, Bars & Pubs', 'Food & Drinks', 'Restaurants'],
@@ -118,28 +96,33 @@ module.exports = {
           };
         });
 
-      } else {
-        // still thinking of what to put here:)
       }
 
 
       if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
-      if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
-      if (request.query.region) findObj.merchant_region = new RegExp(request.query.region, 'i');
+
+      if (request.query.geo) {
+        var lng = request.query.geo[0];
+        var lat = request.query.geo[1];
+
+        findObj.loc = {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [lng, lat]
+            },
+
+            $maxDistance: 8046.72 // 5 miles
+          }
+        };
+
+      }
 
 
       db.deals.find(findObj).skip(skip).sort({
         insert_date: -1
       }).limit(limit, function(err, results) {
-        if (results.length === 0) reply(loading);
-
-        if (results.length !== 0) {
-          var cachedResults = _.shuffle(results);
-          reply(cachedResults);
-        }
-
-
-
+        reply(results);
       });
     },
 
@@ -151,7 +134,8 @@ module.exports = {
         category: Joi.string(),
         city: Joi.string(),
         provider: Joi.string(),
-        region: Joi.string()
+        region: Joi.string(),
+        geo: Joi.array()
       }
     }
 
@@ -250,27 +234,13 @@ module.exports = {
 
 
 
-//       if (request.query.category && request.query.category != 'All') {
-
-//           var cArray = hashFn(request.query.category, categoryArray);
-
-//           queryObj.$in = cArray.map(function(item) {
-//             return {
-//               category_name: new RegExp(item, "i")
-//             };
-//           });
-
-//         }
-
-      if (request.query.location) queryObj.merchant_locality = new RegExp(request.query.location, "i");
+      if (request.query.city) queryObj.merchant_locality = new RegExp(request.query.city, "i");
 
       if (request.query.price && request.query.price !== 'All') queryObj.new_price = hashFn(request.query.price, priceArray);
 
       queryObj.$text = {
         $search: q
       };
-			
-			console.log(queryObj);
 
 
       db.deals.find(queryObj, {
@@ -278,6 +248,7 @@ module.exports = {
           $meta: "textScore"
         }
       }).sort({
+				insert_date: -1,
         score: {
           $meta: "textScore"
         }
@@ -294,8 +265,9 @@ module.exports = {
         limit: Joi.number().integer().min(1).max(50).
         default (20),
         offset: Joi.number().min(1).max(100).integer(),
-        location: Joi.string(),
-        price: Joi.string()
+        city: Joi.string(),
+        price: Joi.string(),
+				geo: Joi.array()
       }
     }
 
