@@ -1,7 +1,8 @@
 #!/bin/sh
-
-if [ $(ps -e -o uid,cmd | grep $UID | grep node | grep -v grep | wc -l | tr -s "\n") -eq 0 ]
+ 
+if [ $(ps aux | grep $USER | grep node | grep -v grep | wc -l | tr -s "\n") -eq 0 ]
 then
-        export PATH=/usr/local/bin:$PATH
-        forever start --sourceDir /var/www/dealsbox-api server.js >> /var/www/dealsbox-api/log.txt 2>&1
+  export PATH=/usr/local/bin:$PATH
+  export NODE_ENV=production
+  cd /var/www/dealsbox-api && forever --spinSleepTime 10000 start server.js >> forever.log 2>&1
 fi
