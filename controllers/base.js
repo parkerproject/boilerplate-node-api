@@ -226,7 +226,7 @@ module.exports = {
   search: {
     handler: function(request, reply) {
 
-      var q = request.query.q || '';
+      var q = '"' + request.query.q + '"' || '';
       var limit = request.query.limit || 20;
       var skip = request.query.offset || 0;
       var queryObj = {};
@@ -248,7 +248,7 @@ module.exports = {
           $meta: "textScore"
         }
       }).sort({
-				insert_date: -1,
+        insert_date: -1,
         score: {
           $meta: "textScore"
         }
@@ -267,7 +267,7 @@ module.exports = {
         offset: Joi.number().min(1).max(100).integer(),
         city: Joi.string(),
         price: Joi.string(),
-				geo: Joi.array()
+        geo: Joi.array()
       }
     }
 
