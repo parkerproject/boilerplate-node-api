@@ -226,13 +226,13 @@ module.exports = {
   search: {
     handler: function(request, reply) {
 
-      var q = '"' + request.query.q + '"' || '';
+      var q = '"' + request.query.q + '" ' + request.query.q || '';
       var limit = request.query.limit || 20;
       var skip = request.query.offset || 0;
       var queryObj = {};
       q = q.trim();
 
-
+      console.log(q);
 
       if (request.query.city) queryObj.merchant_locality = new RegExp(request.query.city, "i");
 
