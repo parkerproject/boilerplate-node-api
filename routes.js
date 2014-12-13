@@ -26,7 +26,7 @@ module.exports = function(server) {
 				{
 					method: 'GET',
 					path: '/api/deals/search',
-					config: controller.base.search
+					config: controller.search.search
 				},
 				{
 					method: 'GET',
@@ -36,7 +36,7 @@ module.exports = function(server) {
 					{
 					method: 'GET',
 					path: '/api/deals/reviews',
-					config: controller.base.reviews
+					config: controller.reviews.reviews
 				},
 			
 				{

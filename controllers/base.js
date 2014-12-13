@@ -4,6 +4,7 @@ var db = require("mongojs").connect(process.env.BOXEDSALE_MONGODB_URL, collectio
 var Joi = require('joi');
 var _ = require('underscore');
 var loading = 'Fetching deals...';
+var google = require('google');
 
 // var bulk = db.deals.initializeOrderedBulkOp();
 
@@ -26,7 +27,7 @@ String.prototype.replaceArray = function(find, replace) {
 
 
 
-function searchYelp(name, location, cb) {
+function searchYelp(name, cb) {
 
   var yelp = require("yelp").createClient({
     consumer_key: "9EH0m_d2u_xDFwbXzBSd7Q",
@@ -35,10 +36,7 @@ function searchYelp(name, location, cb) {
     token_secret: "3jNfZx7fGZ4cw43ne2ySvRb2g_Q"
   });
 
-  yelp.search({
-    term: name,
-    location: location
-  }, function(error, data) {
+  yelp.business(name, function(error, data) {
     if (error) console.log(error);
     if (data) cb(data);
   });
@@ -178,100 +176,6 @@ module.exports = {
     }
 
   },
-
-  reviews: {
-    handler: function(request, reply) {
-
-      var business_name = request.query.business;
-      var location = request.query.location;
-      business_name = business_name.replace("&", "");
-
-
-
-      searchYelp(business_name, location, function(biz) {
-
-        if (biz.businesses.length > 0) {
-          var filteredBiz = biz.businesses[0];
-          delete filteredBiz.is_claimed;
-          delete filteredBiz.mobile_url;
-          delete filteredBiz.url;
-          delete filteredBiz.snippet_text;
-          delete filteredBiz.categories;
-          delete filteredBiz.image_url;
-          delete filteredBiz.snippet_image_url;
-
-          reply(filteredBiz);
-        } else {
-          reply({
-            'rating': null
-          });
-        }
-
-      });
-
-
-
-    },
-
-    validate: {
-      query: {
-        business: Joi.string(),
-        location: Joi.string(),
-        phone: Joi.string()
-      }
-    }
-
-  },
-
-  search: {
-    handler: function(request, reply) {
-
-      var q = '"' + request.query.q + '" ' + request.query.q || '';
-      var limit = request.query.limit || 20;
-      var skip = request.query.offset || 0;
-      var queryObj = {};
-      q = q.trim();
-
-      console.log(q);
-
-      if (request.query.city) queryObj.merchant_locality = new RegExp(request.query.city, "i");
-
-      if (request.query.price && request.query.price !== 'All') queryObj.new_price = hashFn(request.query.price, priceArray);
-
-      queryObj.$text = {
-        $search: q
-      };
-
-
-      db.deals.find(queryObj, {
-        score: {
-          $meta: "textScore"
-        }
-      }).sort({
-        insert_date: -1,
-        score: {
-          $meta: "textScore"
-        }
-      }).limit(limit, function(err, results) {
-        reply(results);
-      });
-
-
-    },
-
-    validate: {
-      query: {
-        q: Joi.string(),
-        limit: Joi.number().integer().min(1).max(50).
-        default (20),
-        offset: Joi.number().min(1).max(100).integer(),
-        city: Joi.string(),
-        price: Joi.string(),
-        geo: Joi.array()
-      }
-    }
-
-  }
 
 
 };
