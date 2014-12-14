@@ -40,7 +40,7 @@ module.exports = {
       var patternUrl = new RegExp("www.yelp.com", 'i');
       var patternTitle = new RegExp(business_name, 'i');
 			
-			console.log('yelp ' + business_name + business_address);
+			//console.log('yelp ' + business_name + business_address);
 
       google('yelp ' + business_name + business_address, function(err, next, links) {
 
@@ -68,7 +68,7 @@ module.exports = {
             break;
 
           }else{
-						reply(null);
+						reply({'rating': null});
 					}
 
         }
