@@ -52,7 +52,7 @@ module.exports = {
           var business_title = links[i].title;
 					
 
-          if (patternUrl.test(business_url) && patternTitle.test(business_title)) {
+          if (patternUrl.test(business_url)) {
 
             var arr = business_url.split('/');
             var business_id = arr[(arr.length) - 1];
