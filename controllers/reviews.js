@@ -83,7 +83,7 @@ module.exports = {
     validate: {
       query: {
         business: Joi.string(),
-        location: Joi.string(),
+        //location: Joi.string(),
         phone: Joi.string(),
 				address: Joi.string()
       }
