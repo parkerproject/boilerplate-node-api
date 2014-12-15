@@ -33,7 +33,7 @@ module.exports = {
       var business_address = '';
       var business_name = decodeURIComponent(request.query.business);
 			if(request.query.address)business_address = ' ' + decodeURIComponent(request.query.address);
-      var location = request.query.location;
+			if(request.query.location) business_address = ' ' + decodeURIComponent(request.query.location);
 
       google.resultsPerPage = 10;
       var nextCounter = 0;
