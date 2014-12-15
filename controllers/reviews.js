@@ -33,16 +33,18 @@ module.exports = {
       var business_address = '';
       var business_name = decodeURIComponent(request.query.business);
 			if(request.query.address)business_address = ' ' + decodeURIComponent(request.query.address);
-			if(request.query.location) business_address = ' ' + decodeURIComponent(request.query.location);
+			//if(request.query.location) business_address = ' ' + decodeURIComponent(request.query.location);
 
       google.resultsPerPage = 10;
       var nextCounter = 0;
-      var patternUrl = new RegExp("www.yelp.com", 'i');
+      var patternUrl = new RegExp("www.yelp.com/biz/", 'i');
       var patternTitle = new RegExp(business_name, 'i');
 			
 			//console.log('yelp ' + business_name + business_address);
 
       google('yelp ' + business_name + business_address, function(err, next, links) {
+				
+				//console.log(links);
 
         if (err) console.error(err);
 
