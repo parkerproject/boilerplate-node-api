@@ -14,6 +14,20 @@ var google = require('google');
 //  console.log(res);                                                                                                                                 
 // });
 
+// db.deals.distinct("category_name", {}, function(err,res){
+// 	res.filter(function(str){
+// 		return (/\S/).test(str);
+// 	});
+	
+// 	res.forEach(function(str){
+// 		var e = str.split(' ');
+// 		e.filter(function(str){
+// 			return (/\S/).test(str);
+// 		});
+// 		console.log(e);
+// 	});
+// });
+
 
 String.prototype.replaceArray = function(find, replace) {
   var replaceString = this;
@@ -118,6 +132,7 @@ module.exports = {
 
 
       db.deals.find(findObj).skip(skip).sort({
+				sort_index: 1,
         insert_date: -1
       }).limit(limit, function(err, results) {
         reply(results);
