@@ -132,7 +132,7 @@ module.exports = {
 
 
       db.deals.find(findObj).skip(skip).sort({
-				sort_index: 1,
+				//sort_index: 1,
         insert_date: -1
       }).limit(limit, function(err, results) {
         reply(results);
