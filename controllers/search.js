@@ -71,8 +71,8 @@ module.exports = {
         score: {
           $meta: "textScore"
         }
-      }).sort({
-        insert_date: -1,
+      }).skip(skip).sort({
+        //insert_date: -1,
         score: {
           $meta: "textScore"
         }

@@ -18,7 +18,7 @@ var google = require('google');
 // 	res.filter(function(str){
 // 		return (/\S/).test(str);
 // 	});
-	
+
 // 	res.forEach(function(str){
 // 		var e = str.split(' ');
 // 		e.filter(function(str){
@@ -124,15 +124,15 @@ module.exports = {
               coordinates: [lng, lat]
             },
 
-            $maxDistance: 8046.72 // 5 miles
+            $maxDistance: 8046.72 // 5 miles = roughly 8046.72meteres
           }
-        };
+        };       
 
       }
-
+       
+			console.log(findObj);
 
       db.deals.find(findObj).skip(skip).sort({
-				//sort_index: 1,
         insert_date: -1
       }).limit(limit, function(err, results) {
         reply(results);
