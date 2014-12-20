@@ -15,17 +15,17 @@ var google = require('google');
 // });
 
 // db.deals.distinct("category_name", {}, function(err,res){
-// 	res.filter(function(str){
-// 		return (/\S/).test(str);
-// 	});
+//  res.filter(function(str){
+//      return (/\S/).test(str);
+//  });
 
-// 	res.forEach(function(str){
-// 		var e = str.split(' ');
-// 		e.filter(function(str){
-// 			return (/\S/).test(str);
-// 		});
-// 		console.log(e);
-// 	});
+//  res.forEach(function(str){
+//      var e = str.split(' ');
+//      e.filter(function(str){
+//          return (/\S/).test(str);
+//      });
+//      console.log(e);
+//  });
 // });
 
 
@@ -87,7 +87,7 @@ function hashFn(item, arr) {
 
 
 module.exports = {
-    all_deals: {
+    index: {
         handler: function(request, reply) {
 
             "use strict";
@@ -96,42 +96,16 @@ module.exports = {
             var skip = request.query.offset || 0;
             var findObj = {};
 
-
-
-            if (request.query.category && request.query.category !== 'all deals') {
-
-                var cArray = hashFn(request.query.category, categoryArray);
-
-                findObj.$or = cArray.map(function(item) {
-                    return {
-                        category_name: new RegExp(item, "i")
-                    };
-                });
-
-            }
-
-
             if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
 
-            if (request.query.geo) {
-                var lng = request.query.geo[0];
-                var lat = request.query.geo[1];
+            findObj.quantity_bought = {
+                $ne: ''
+            };
 
-                findObj.loc = {
-                    $near: {
-                        $geometry: {
-                            type: "Point",
-                            coordinates: [lng, lat]
-                        },
-
-                        $maxDistance: 8046 // 5 miles = roughly 8046.72meteres
-                    }
-                };
-
-            }
+            console.log(findObj);
 
             db.deals.find(findObj).skip(skip).sort({
-                insert_date: -1
+                quantity_bought: -1
             }).limit(limit, function(err, results) {
                 reply(results);
             });
@@ -142,53 +116,9 @@ module.exports = {
                 limit: Joi.number().integer().min(1).max(50).
                 default(20),
                 offset: Joi.number().min(1).max(100).integer(),
-                category: Joi.string(),
-                city: Joi.string(),
-                provider: Joi.string(),
-                region: Joi.string(),
-                geo: Joi.array()
+                city: Joi.string()
             }
         }
 
-    },
-
-
-
-    cities: {
-        handler: function(request, reply) {
-            db.cities.find({}, function(err, results) {
-                reply(results);
-            });
-        }
-
-    },
-
-    price: {
-        handler: function(request, reply) {
-            db.price.find({}, function(err, results) {
-                reply(results);
-            });
-        }
-
-    },
-
-    categories: {
-        handler: function(request, reply) {
-            db.categories.find({}, function(err, results) {
-                reply(results);
-            });
-        }
-
-    },
-
-    providers: {
-        handler: function(request, reply) {
-            db.providers.find({}, function(err, results) {
-                reply(results);
-            });
-        }
-
-    },
-
-
+    }
 };
