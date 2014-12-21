@@ -54,7 +54,8 @@ module.exports = {
                     var business = _.findWhere(biz.businesses, {
                         phone: phone
                     });
-                    if (business != 'undefined') {
+                    console.log(business);
+                    if (typeof business !== 'undefined') {
                         businessYelp(business.id, function(res) {
                             reply(res);
                         });
