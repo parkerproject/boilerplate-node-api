@@ -41,7 +41,6 @@ module.exports = {
             var terms = {};
 
             if (request.query.business) terms.term = decodeURIComponent(request.query.business);
-            if (request.query.phone) var phone = (request.query.phone).split('-').join('');
             if (request.query.location) {
                 var location = decodeURIComponent(request.query.location);
                 location = location.split(' ').join('+');
@@ -51,20 +50,39 @@ module.exports = {
             searchYelp(terms, function(biz) {
 
                 if (typeof biz.businesses !== 'undefined' && biz.businesses.length > 0) {
-                    var business = _.findWhere(biz.businesses, {
-                        phone: phone
-                    });
-                    console.log(business);
-                    if (typeof business !== 'undefined') {
+
+                    var business;
+
+                    if (request.query.phone) {
+
+                        var phone = (request.query.phone).split('-').join('');
+
+                        business = _.findWhere(biz.businesses, {
+                            phone: phone
+                        });
+
+                        if (typeof business !== 'undefined') {
+                            businessYelp(business.id, function(res) {
+                                reply(res);
+                            });
+
+                        } else {
+                            reply({
+                                'rating': null
+                            });
+                        }
+
+                    } else {
+                        business = biz.businesses[0];
                         businessYelp(business.id, function(res) {
                             reply(res);
                         });
-
-                    } else {
-                        reply({
-                            'rating': null
-                        });
                     }
+
+                } else {
+                    reply({
+                        'rating': null
+                    });
                 }
 
             });
