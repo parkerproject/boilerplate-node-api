@@ -40,11 +40,14 @@ module.exports = {
 
             var terms = {};
 
-            if (request.query.business) terms.term = decodeURIComponent(request.query.business);
+            if (request.query.business) {
+                var term = decodeURIComponent(request.query.business);
+                terms.term = term.split(' ').join('+');
+            }
+
             if (request.query.location) {
                 var location = decodeURIComponent(request.query.location);
-                location = location.split(' ').join('+');
-                terms.location = location;
+                terms.location = location.split(' ').join('+');
             }
 
             searchYelp(terms, function(biz) {
@@ -63,6 +66,7 @@ module.exports = {
 
                         if (typeof business !== 'undefined') {
                             businessYelp(business.id, function(res) {
+                                console.log('hip3');
                                 reply(res);
                             });
 
