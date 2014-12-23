@@ -41,23 +41,6 @@ String.prototype.replaceArray = function(find, replace) {
 
 
 
-function searchYelp(name, cb) {
-
-    var yelp = require("yelp").createClient({
-        consumer_key: "9EH0m_d2u_xDFwbXzBSd7Q",
-        consumer_secret: "YZlPfA23FaaYKwat1muiwIVFrts",
-        token: "zySwZm2QhzHApHRimJX8dcT4ycC6Y_WB",
-        token_secret: "3jNfZx7fGZ4cw43ne2ySvRb2g_Q"
-    });
-
-    yelp.business(name, function(error, data) {
-        if (error) console.log(error);
-        if (data) cb(data);
-    });
-
-}
-
-
 
 var categoryArray = {
     'food, drinks': ['Restaurants, Bars & Pubs', 'Food & Drinks', 'Restaurants'],
@@ -181,6 +164,7 @@ module.exports = {
 
     },
 
+
     providers: {
         handler: function(request, reply) {
             db.providers.find({}, function(err, results) {
@@ -188,7 +172,7 @@ module.exports = {
             });
         }
 
-    },
+    }
 
 
 };
