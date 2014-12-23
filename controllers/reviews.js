@@ -879,7 +879,6 @@ module.exports = {
 
             if (request.query.business) {
                 var term = decodeURIComponent(request.query.business);
-                var patternName = new RegExp(term.latinize(), 'i');
                 terms.term = term.split(' ').join('+');
             }
 
@@ -923,16 +922,9 @@ module.exports = {
 
                     } else {
                         business = biz.businesses[0];
-                        if (patternName.test(business.name)) {
-                            businessYelp(business.id, function(res) {
-                                reply(res);
-                            });
-                        } else {
-                            reply({
-                                'rating': null
-                            });
-                        }
-
+                        businessYelp(business.id, function(res) {
+                            reply(res);
+                        });
                     }
 
                 } else {
