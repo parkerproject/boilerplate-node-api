@@ -7,41 +7,41 @@ module.exports = function(server) {
     // Array of routes for Hapi
     var routeTable = [{
             method: 'GET',
-            path: '/api/deals',
+            path: '/deals',
             config: controller.base.all_deals
         },
 
         {
             method: 'GET',
-            path: '/api/deals/cities',
+            path: '/deals/cities',
             config: controller.base.cities
         },
 
         {
             method: 'GET',
-            path: '/api/deals/categories',
+            path: '/deals/categories',
             config: controller.base.categories
         }, {
             method: 'GET',
-            path: '/api/deals/search',
+            path: '/deals/search',
             config: controller.search.search
         }, {
             method: 'GET',
-            path: '/api/deals/providers',
+            path: '/deals/providers',
             config: controller.base.providers
         }, {
             method: 'GET',
-            path: '/api/deals/reviews',
+            path: '/deals/reviews',
             config: controller.reviews.reviews
         },
 
         {
             method: 'GET',
-            path: '/api/deals/prices',
+            path: '/deals/prices',
             config: controller.base.price
         }, {
             method: 'GET',
-            path: '/api/deals/trending',
+            path: '/deals/trending',
             config: controller.trending.index
         }
     ];
