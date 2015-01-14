@@ -41,14 +41,6 @@ String.prototype.replaceArray = function(find, replace) {
 
 
 
-
-var categoryArray = {
-    'food, drinks': ['Restaurants, Bars & Pubs', 'Food & Drinks', 'Restaurants'],
-    'activities, events, travel': ['Entertainment & Travel', 'Things to do', 'Events & Activities'],
-    'beauty, health': ['Health & Beauty', 'Health & Fitness', 'Beauty & Spas', 'Sports & Fitness'],
-    'shopping, services': ['Home Services', 'Local Services', 'Services', 'Shopping & Services', 'Shopping']
-};
-
 var priceArray = {
     'less than $25': {
         $lt: 25
@@ -81,16 +73,10 @@ module.exports = {
 
 
 
-            if (request.query.category && request.query.category !== 'all deals') {
+            if (request.query.category) {
+               var item = decodeURIComponent(request.query.category);
 
-                var cArray = hashFn(request.query.category, categoryArray);
-
-                findObj.$or = cArray.map(function(item) {
-                    return {
-                        category_name: new RegExp(item, "i")
-                    };
-                });
-
+                findObj.category_name = new RegExp(item, "i");
             }
 
 

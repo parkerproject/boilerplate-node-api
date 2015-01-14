@@ -56,7 +56,6 @@ module.exports = {
       var queryObj = {};
       q = q.trim();
 
-      console.log(q);
 
       if (request.query.city) queryObj.merchant_locality = new RegExp(request.query.city, "i");
 
