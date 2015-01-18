@@ -74,7 +74,7 @@ module.exports = {
 
 
             if (request.query.category) {
-               var item = decodeURIComponent(request.query.category);
+                var item = decodeURIComponent(request.query.category);
 
                 findObj.category_name = new RegExp(item, "i");
             }
@@ -93,7 +93,7 @@ module.exports = {
                             coordinates: [lng, lat]
                         },
 
-                        $maxDistance: 8046 // 5 miles = roughly 8046.72meteres
+                        $maxDistance: 5000 // 5 miles = roughly 8046.72meteres
                     }
                 };
 
