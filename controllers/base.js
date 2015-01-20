@@ -6,27 +6,6 @@ var _ = require('underscore');
 var loading = 'Fetching deals...';
 var google = require('google');
 
-// var bulk = db.deals.initializeOrderedBulkOp();
-
-// bulk.find({provider_name: "Amazon Local", merchant_locality: "albany"}).update({$set: {merchant_locality: "boston"}});
-
-// bulk.execute(function(err, res) {
-//  console.log(res);
-// });
-
-// db.deals.distinct("category_name", {}, function(err,res){
-// 	res.filter(function(str){
-// 		return (/\S/).test(str);
-// 	});
-
-// 	res.forEach(function(str){
-// 		var e = str.split(' ');
-// 		e.filter(function(str){
-// 			return (/\S/).test(str);
-// 		});
-// 		console.log(e);
-// 	});
-// });
 
 
 String.prototype.replaceArray = function(find, replace) {
@@ -93,7 +72,7 @@ module.exports = {
                             coordinates: [lng, lat]
                         },
 
-                        $maxDistance: 5000 // 5 miles = roughly 8046.72meteres
+                        $maxDistance: 9000 // 5 miles = roughly 8046.72meteres
                     }
                 };
 
