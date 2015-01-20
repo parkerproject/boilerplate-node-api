@@ -78,9 +78,7 @@ module.exports = {
 
             }
 
-            db.deals.find(findObj).skip(skip).sort({
-                insert_date: -1
-            }).limit(limit, function(err, results) {
+            db.deals.find(findObj).skip(skip).limit(limit, function(err, results) {
                 reply(results);
             });
         },
