@@ -72,7 +72,7 @@ module.exports = {
                             coordinates: [lng, lat]
                         },
 
-                        $maxDistance: 9000 // 5 miles = roughly 8046.72meteres
+                        $maxDistance: 12000 // 5 miles = roughly 8046.72meteres
                     }
                 };
 
