@@ -60,6 +60,7 @@ module.exports = {
 
 
             if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
+					if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
 
             if (request.query.geo) {
                 var lng = request.query.geo[0];
