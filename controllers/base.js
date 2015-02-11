@@ -86,8 +86,7 @@ module.exports = {
 
         validate: {
             query: {
-                limit: Joi.number().integer().min(1).max(50).
-                default(20),
+                limit: Joi.number().integer().min(1).default(20),
                 offset: Joi.number().min(1).max(100).integer(),
                 category: Joi.string(),
                 city: Joi.string(),
