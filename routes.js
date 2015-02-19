@@ -43,10 +43,6 @@ module.exports = function(server) {
             method: 'GET',
             path: '/deals/trending',
             config: controller.trending.index
-        }, {
-            method: 'GET',
-            path: '/deals/8coupons',
-            config: controller._8coupons.index
         }
     ];
     return routeTable;
