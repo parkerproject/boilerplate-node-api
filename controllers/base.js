@@ -71,7 +71,7 @@ module.exports = {
                         $geometry: {
                             type: "Point",
                             coordinates: [lng, lat]
-                        }
+                        },
                         $maxDistance: 10000.72 // 5 miles = roughly 8046.72meteres
                     }
                 };
