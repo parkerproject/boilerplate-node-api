@@ -60,7 +60,7 @@ module.exports = {
 
 
             if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
-					if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
+            if (request.query.provider) findObj.provider_name = new RegExp(request.query.provider, 'i');
 
             if (request.query.geo) {
                 var lng = request.query.geo[0];
@@ -72,8 +72,7 @@ module.exports = {
                             type: "Point",
                             coordinates: [lng, lat]
                         }
-
-                        //$maxDistance: 12000 // 5 miles = roughly 8046.72meteres
+                        $maxDistance: 10000.72 // 5 miles = roughly 8046.72meteres
                     }
                 };
 
