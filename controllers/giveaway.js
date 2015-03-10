@@ -25,7 +25,7 @@ module.exports = {
 
         validate: {
             query: {
-                UDID: Joi.number()
+                UDID: Joi.string()
             }
         }
 
