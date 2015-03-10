@@ -53,6 +53,10 @@ module.exports = function(server) {
         method: 'GET',
         path: '/recommend/deals',
         config: controller.recommend.index
+    }, {
+        method: 'GET',
+        path: '/giveaway',
+        config: controller.giveaway.index
     }];
     return routeTable;
 };

@@ -49,8 +49,6 @@ module.exports = {
 
     },
 
-
-
     createItem: {
         handler: function(request, reply) {
             // Register a new item
@@ -59,11 +57,10 @@ module.exports = {
                 .then(function(result) {
                     console.log(result); // Prints "{eventId: 'something'}"
                     reply(result);
-                }).
-            catch(function(err) {
-                console.error(err); // Something went wrong
-                reply(err);
-            });
+                }).catch(function(err) {
+                    console.error(err); // Something went wrong
+                    reply(err);
+                });
         }
 
     },
