@@ -14,10 +14,10 @@ module.exports = {
             var user = request.query.UDID;
 
             var sweeps = {
-                "title": "$10 Spa Day Gift Card and the image",
+                "title": "$10 Spa Day Gift Card",
                 "image": "https://dl.dropboxusercontent.com/u/9995989/spa.png",
                 "points": 500
-            }
+            };
 
             reply(sweeps);
 
