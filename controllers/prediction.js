@@ -3,8 +3,7 @@ var raccoon = require('raccoon');
 raccoon.config.nearestNeighbors = 10; // number of neighbors you want to compare a user against
 raccoon.config.className = 'deal'; // prefix for your items (used for redis)
 raccoon.config.numOfRecsStore = 30; // number of recommendations to store per user
-raccoon.connect(6379, '127.0.0.1');
-raccoon.flush(); // flushes your redis instance
+raccoon.connect(process.env.REDIS_PORT, process.env.REDIS_URL, process.env.REDIS_AUTH);
 
 module.exports = {
     createAction: {
@@ -12,7 +11,9 @@ module.exports = {
             var userId = request.payload.UDID;
             var productId = request.payload.deal_id;
             raccoon.liked(userId, productId, function() {
-                reply({status: userId+' added to redis'});
+                reply({
+                    status: userId + ' added to redis'
+                });
             });
         }
     },
