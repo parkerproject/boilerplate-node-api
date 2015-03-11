@@ -39,20 +39,12 @@ module.exports = function(server) {
         config: controller.trending.index
     }, {
         method: 'POST',
-        path: '/predict/createuser',
-        config: controller.prediction.createUser
-    }, {
-        method: 'POST',
-        path: '/predict/createitem',
-        config: controller.prediction.createItem
-    }, {
-        method: 'POST',
         path: '/predict/createaction',
         config: controller.prediction.createAction
     }, {
         method: 'GET',
-        path: '/recommend/deals',
-        config: controller.recommend.index
+        path: '/predict/recommend',
+        config: controller.prediction.recommend
     }, {
         method: 'GET',
         path: '/giveaway',
