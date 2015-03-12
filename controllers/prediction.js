@@ -18,6 +18,18 @@ module.exports = {
         }
     },
 
+    unSave: {
+        handler: function(request, reply) {
+            var userId = request.payload.UDID;
+            var productId = request.payload.deal_id;
+            raccoon.disliked(userId, productId, function() {
+                reply({
+                    status: userId + ' removed from redis'
+                });
+            });
+        }
+    },
+
     recommend: {
         handler: function(request, reply) {
             var userId = request.query.UDID;
