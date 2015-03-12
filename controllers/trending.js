@@ -23,10 +23,10 @@ module.exports = {
 
 
             raccoon.bestRated(function(results) {
-                console.log(results);
+               
                 findObj.deal_id = {
                     $in: results
-                }
+                };
                 db.deals.find(findObj).limit(limit, function(err, deals) {
                     reply(deals);
                 });
