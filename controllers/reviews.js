@@ -914,12 +914,7 @@ module.exports = {
         terms.location = location.split(' ').join('+');
       }
 
-      if (request.query.city) { //city is only set via python code during the crawl
-        var loc = decodeURIComponent(request.query.city);
-        terms.location = loc.split(' ').join('+');
-      }
 
- 
       searchYelp(terms, function(biz) {
 
 
@@ -944,11 +939,7 @@ module.exports = {
             }
           }
 
-          if (request.query.city) { //city is only set via python code during the crawl
 
-              reply(biz.businesses[0]);
-        
-          }
 
           if (request.query.location) {
 
