@@ -11,27 +11,43 @@ raccoon.connect(process.env.REDIS_PORT, process.env.REDIS_URL, process.env.REDIS
 
 module.exports = {
     index: {
+        // handler: function(request, reply) {
+
+        //     "use strict";
+
+        //     var limit = request.query.limit || 20;
+
+        //     var findObj = {};
+
+        //     if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
+
+
+        //     raccoon.bestRated(function(results) {
+        //         findObj.deal_id = {
+        //             $in: results
+        //         };
+        //         db.deals.find(findObj).limit(limit, function(err, deals) {
+        //             reply(deals);
+        //         });
+
+        //     });
+        // },
         handler: function(request, reply) {
-
             "use strict";
-
             var limit = request.query.limit || 20;
-
+            var skip = request.query.offset || 0;
             var findObj = {};
-
             if (request.query.city) findObj.merchant_locality = new RegExp(request.query.city, 'i');
+            findObj.quantity_bought = {
+                $ne: ''
+            };
 
-
-            raccoon.bestRated(function(results) {
-               
-                findObj.deal_id = {
-                    $in: results
-                };
-                db.deals.find(findObj).limit(limit, function(err, deals) {
-                    reply(deals);
-                });
-
+            db.deals.find(findObj).skip(skip).sort({
+                quantity_bought: -1
+            }).limit(limit, function(err, results) {
+                reply(results);
             });
+
         },
 
         validate: {
