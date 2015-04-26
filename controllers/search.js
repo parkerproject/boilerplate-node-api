@@ -17,6 +17,9 @@ String.prototype.replaceArray = function(find, replace) {
 
 
 var priceArray = {
+    'less than $10': {
+        $lt: 10
+    },
     'less than $25': {
         $lt: 25
     },
