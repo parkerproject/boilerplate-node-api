@@ -37,6 +37,10 @@ module.exports = function(server) {
         method: 'GET',
         path: '/deals/trending',
         config: controller.trending.index
+    },{
+        method: 'GET',
+        path: '/deal',
+        config: controller.base.one_deal
     }, {
         method: 'POST',
         path: '/predict/createaction',

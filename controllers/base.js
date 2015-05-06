@@ -1,3 +1,4 @@
+/* global mongojs */
 require('dotenv').load();
 var collections = ['deals', 'cities', 'categories', 'providers', 'price'];
 var db = require("mongojs").connect(process.env.BOXEDSALE_MONGODB_URL, collections);
@@ -95,6 +96,28 @@ module.exports = {
                 provider: Joi.string(),
                 region: Joi.string(),
                 geo: Joi.array()
+            }
+        }
+
+    },
+    
+        one_deal: {
+        handler: function(request, reply) {
+
+            "use strict";
+
+            var id = request.query.id;
+
+            db.deals.findOne({deal_id: id}, function(err, results) {
+                if(err) reply('Error retrieving deal');
+                reply(results);
+            });
+           
+        },
+
+        validate: {
+            query: {
+                id: Joi.string()
             }
         }
 
