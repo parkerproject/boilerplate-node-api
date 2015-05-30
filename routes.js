@@ -37,7 +37,7 @@ module.exports = function(server) {
         method: 'GET',
         path: '/deals/trending',
         config: controller.trending.index
-    },{
+    }, {
         method: 'GET',
         path: '/deal',
         config: controller.base.one_deal
@@ -57,6 +57,10 @@ module.exports = function(server) {
         method: 'GET',
         path: '/giveaway',
         config: controller.giveaway.index
+    }, {
+        method: 'GET',
+        path: '/report',
+        config: controller.report.count_deals
     }, {
         method: 'GET',
         path: '/shorten',

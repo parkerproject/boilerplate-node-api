@@ -49,7 +49,7 @@ module.exports = {
             var q = request.query.q;
             var limit = request.query.limit || 20;
             var skip = request.query.offset || 0;
-            var accuracy = 1;// accuracy for computing geo distance
+            var accuracy = 1; // accuracy for computing geo distance
             var queryObj = {};
             q = q.trim();
 
@@ -76,11 +76,12 @@ module.exports = {
                     $meta: "textScore"
                 }
             }).limit(limit, function(err, results) {
-                var res = results,
+                var res = Array.isArray(results) ? results : [],
                     geo = request.query.geo;
 
+
                 if (geo && parseFloat(geo[0]) && parseFloat(geo[1])) {
-                    res = res.sort(function (d1, d2){
+                    res = res.sort(function(d1, d2) {
                         return dist(d1.loc.coordinates, geo, accuracy) - dist(d2.loc.coordinates, geo, accuracy);
                     });
                 }
