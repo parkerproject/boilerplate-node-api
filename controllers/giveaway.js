@@ -16,7 +16,8 @@ module.exports = {
             var sweeps = {
                 "title": "$10 Spa Day Gift Card",
                 "image": "https://dl.dropboxusercontent.com/u/9995989/spa.png",
-                "points": 500
+                "start_date": "June 1",
+                "end_date": "June 5"
             };
 
             reply(sweeps);
