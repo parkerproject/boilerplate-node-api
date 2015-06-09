@@ -63,6 +63,10 @@ module.exports = function(server) {
         config: controller.report.count_deals
     }, {
         method: 'GET',
+        path: '/cashback',
+        config: controller.cashback.index
+    }, {
+        method: 'GET',
         path: '/shorten',
         config: controller.share_url.index
     }];
