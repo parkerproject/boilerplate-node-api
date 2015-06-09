@@ -22,7 +22,7 @@ module.exports = {
 
             // });
             reply({
-                'cash': '0.00',
+                'cash': 0.00,
                 'user': user
             });
 
