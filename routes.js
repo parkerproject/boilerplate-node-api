@@ -12,7 +12,7 @@ module.exports = function(server) {
     }, {
         method: 'GET',
         path: '/deals/cities',
-        config: controller.cities.index
+        config: controller.base.cities
     }, {
         method: 'GET',
         path: '/deals/categories',
