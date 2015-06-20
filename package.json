@@ -1,7 +1,7 @@
 {
-  "name": "boxedsalesapi",
+  "name": "devapi",
   "version": "0.0.0",
-  "description": "boxedsales api",
+  "description": "dev-api",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,23 +9,16 @@
   "author": "Parker Ituk",
   "license": "ISC",
   "dependencies": {
-    "bitly": "^1.2.5",
+    "async": "^1.2.1",
     "dotenv": "~0.4.0",
     "es6-promise": "~2.0.0",
-    "google": "~0.6.0",
     "hapi": "~7.0.0",
-    "joi": "~4.7.0",
     "lodash": "^3.9.3",
-    "mongodb": "^1.4.28",
     "mongojs": "~0.15.1",
-    "mquery": "~1.3.0",
-    "raccoon": "^0.2.3",
     "redis": "^0.12.1",
     "request": "^2.57.0",
-    "request-promise": "^0.4.0",
     "require-directory": "~2.0.0",
-    "superagent": "^1.2.0",
-    "underscore": "~1.7.0",
+    "x-ray": "^2.0.0",
     "yelp": "~0.1.1"
   }
 }

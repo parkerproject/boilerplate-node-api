@@ -1,12 +1,12 @@
 var Hapi = require('hapi');
-var server = new Hapi.Server('0.0.0.0', 1100, {});
+var server = new Hapi.Server('0.0.0.0', 1800, {});
 
 
 // Export the server to be required elsewhere.
 module.exports = server;
 
-var routes = require('./routes')(server);
-server.route(routes);
+var fn = require('./controllers/base.js');
+
 
 //Start the server
 server.start(function() {
