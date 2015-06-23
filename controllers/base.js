@@ -12,6 +12,10 @@ var async = require('async');
 // }, function(err, num) {
 //   console.log(num);
 // });
+//     obj.loc = {
+//     type: "Point",
+//     coordinates: [obj.meta_content[lngIndex], obj.meta_content[latIndex]]
+// };
 
 function deal(item) {
     return {
@@ -43,6 +47,9 @@ function deal(item) {
 
 var q = async.queue(function(doc, callback) {
     // code for your update
+    // 1. make a scrape to scraper.js
+    // 2. returns an object
+    // 3. save the object (upsert) to mongodb
 
     db.test.save({
         url: doc.BUYURL

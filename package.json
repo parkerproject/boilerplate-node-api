@@ -15,6 +15,7 @@
     "hapi": "~7.0.0",
     "lodash": "^3.9.3",
     "mongojs": "~0.15.1",
+    "query-params": "0.0.1",
     "redis": "^0.12.1",
     "request": "^2.57.0",
     "require-directory": "~2.0.0",
