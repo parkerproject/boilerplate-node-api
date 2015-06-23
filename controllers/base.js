@@ -55,6 +55,8 @@ var q = async.queue(function(doc, callback) {
         url: doc.BUYURL
     });
 
+    callback();
+
 }, Infinity);
 
 var cursor = db.cj.find({
