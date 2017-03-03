@@ -1,15 +1,19 @@
-var Hapi = require('hapi');
-var server = new Hapi.Server('0.0.0.0', 1800, {});
+require('dotenv').config();
+
+const Hapi = require('hapi');
+const routes = require('./controllers');
 
 
-// Export the server to be required elsewhere.
-module.exports = server;
+const envset = {
+  production: process.env.NODE_ENV === 'production',
+};
 
-var fn = require('./controllers/base.js');
+const host = envset.production ? process.env.HOSTNAME : 'localhost';
+const port = envset.production ? process.env.PORT : 3000;
+const server = new Hapi.Server();
 
+server.connection({ host, port });
 
-//Start the server
-server.start(function() {
-    //Log to the console the host and port info
-    console.log('Server started at: ' + server.info.uri);
-});
+// Start the server
+server.route(routes);
+server.start(() => console.log(`Server started at: ${server.info.uri}`));
