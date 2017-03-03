@@ -1,1 +1,2 @@
-A crawler engine
+# boilerplate-node-api
+simple boilerplate for quick API using hapi
